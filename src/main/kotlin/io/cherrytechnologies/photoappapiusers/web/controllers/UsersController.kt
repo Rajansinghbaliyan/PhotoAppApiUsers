@@ -25,8 +25,10 @@ class UsersController(var userService: UserService) {
         userService.getUserById(id).responseOk()
 
     @GetMapping("/")
-    fun getAll(@RequestParam start: Int = 0, @RequestParam limit: Int = 5) =
-        userService.getAllUser(limit, start).responseOk()
+    fun getAll(
+        @RequestParam start: Int?,
+        @RequestParam limit: Int?) =
+        userService.getAllUser(limit ?: 5, start ?: 0 ).responseOk()
 
     @PostMapping("/")
     fun saveUser(@RequestBody userDto: UserDto) = userService.save(userDto).responseCreated()

@@ -6,15 +6,15 @@ import java.util.*
 import javax.persistence.Entity
 
 @Entity
-data class User(
+data class Users(
     override var id: UUID? = null,
     override var createdDate: Timestamp? = null,
     override var lastModifiedDate: Timestamp? = null,
     override var version: Long? = null,
-    val firstName: String,
-    val lastName: String,
-    val email: String,
-    val password: String,
+    var firstName: String?,
+    var lastName: String?,
+    var email: String?,
+    var password: String?,
 ) : Base(id, version, createdDate, lastModifiedDate) {
 
     fun toUserDto() = with(this) {

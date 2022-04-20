@@ -9,6 +9,7 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.util.*
 import java.util.logging.Logger
+
 @Service
 class UserService(val userRepository: UserRepository) {
 
@@ -29,8 +30,16 @@ class UserService(val userRepository: UserRepository) {
             .toUserDto()
             .logInfo(log, "/POST User Name:${userDto.firstName}")
 
-    fun update(id: UUID, userDto: UserDto) = with(getUserById(id)) {
-        save(userDto.copy(id = id))
+    fun update(id: UUID, userDto: UserDto) = with(userRepository.findByIdOrNull(id)) {
+        this ?: throw NotFoundException("User is not present with User id:$id")
+
+        userDto.firstName?.let { firstName = userDto.firstName }
+        userDto.lastName?.let { lastName = userDto.lastName }
+        userDto.email?.let { email = userDto.email }
+        userDto.password?.let { password = userDto.password }
+
+        userRepository.save(this)
+            .toUserDto()
             .logInfo(log, "/PUT User Id:${id}")
     }
 

@@ -26,7 +26,7 @@ class UsersController(var userService: UserService) {
     fun getUserById(@PathVariable id: UUID) =
         userService
             .getUserById(id)
-            .toCreateUserResponseModel()
+//            .toCreateUserResponseModel()
             .responseOk()
 
     @GetMapping("/")

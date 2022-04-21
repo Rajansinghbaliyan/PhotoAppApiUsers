@@ -6,12 +6,13 @@ import io.cherrytechnologies.photoappapiusers.utils.logInfo
 import io.cherrytechnologies.photoappapiusers.web.dto.UserDto
 import io.cherrytechnologies.photoappapiusers.web.repositories.UserRepository
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
 import java.util.logging.Logger
 
 @Service
-class UserService(val userRepository: UserRepository) {
+class UserService(val userRepository: UserRepository, val passwordEncoder: BCryptPasswordEncoder) {
 
     val log: Logger = Logger.getLogger(UserService::class.toString())
 
@@ -26,7 +27,12 @@ class UserService(val userRepository: UserRepository) {
             .map { it.toUserDto() }
 
     fun save(userDto: UserDto) =
-        userRepository.save(userDto.toUser())
+        userRepository
+            .save(
+                userDto
+                    .copy(password = passwordEncoder.encode(userDto.password))
+                    .toUser()
+            )
             .toUserDto()
             .logInfo(log, "/POST User Name:${userDto.firstName}")
 
@@ -36,7 +42,7 @@ class UserService(val userRepository: UserRepository) {
         userDto.firstName?.let { firstName = userDto.firstName }
         userDto.lastName?.let { lastName = userDto.lastName }
         userDto.email?.let { email = userDto.email }
-        userDto.password?.let { password = userDto.password }
+
 
         userRepository.save(this)
             .toUserDto()

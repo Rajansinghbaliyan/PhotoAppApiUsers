@@ -1,5 +1,6 @@
 package io.cherrytechnologies.photoappapiusers.web.services
 
+import io.cherrytechnologies.photoappapiusers.customexceptions.BadRequestException
 import io.cherrytechnologies.photoappapiusers.customexceptions.NotFoundException
 import io.cherrytechnologies.photoappapiusers.utils.OffsetBasedPageRequest
 import io.cherrytechnologies.photoappapiusers.utils.logInfo
@@ -26,8 +27,8 @@ class UserService(val userRepository: UserRepository, val passwordEncoder: BCryp
             .logInfo(log, "/Get All")
             .map { it.toUserDto() }
 
-    fun save(userDto: UserDto) =
-        userRepository
+    fun save(userDto: UserDto) = when (userRepository.findFirstByEmail(userDto.email)) {
+        null -> userRepository
             .save(
                 userDto
                     .copy(password = passwordEncoder.encode(userDto.password))
@@ -35,6 +36,9 @@ class UserService(val userRepository: UserRepository, val passwordEncoder: BCryp
             )
             .toUserDto()
             .logInfo(log, "/POST User Name:${userDto.firstName}")
+        else -> throw BadRequestException("user with this email already exist")
+    }
+
 
     fun update(id: UUID, userDto: UserDto) = with(userRepository.findByIdOrNull(id)) {
         this ?: throw NotFoundException("User is not present with User id:$id")

@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-interface UserRepository: JpaRepository<Users,UUID>
+interface UserRepository: JpaRepository<Users,UUID> {
+    fun findFirstByEmail(email: String?) : Users?
+}

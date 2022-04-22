@@ -11,14 +11,14 @@ spring:
         temp:
           use_jdbc_metadata_defaults: false
         ddl-auto: update
-        hbm2ddl.auto: create-drop
+        hbm2ddl.auto: ${DDL_AUTO}
         naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
-        show-sql: true
+    show-sql: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-#  jackson:
-#    property-naming-strategy: CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES
-#    serialization:
-#      indent_output: true
+  #  jackson:
+  #    property-naming-strategy: CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES
+  #    serialization:
+  #      indent_output: true
   datasource:
     url: ${DATABASE_URL}
     username: ${POSTGRES_USER}

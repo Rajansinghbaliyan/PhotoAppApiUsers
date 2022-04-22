@@ -8,7 +8,7 @@ import java.util.logging.Logger
 fun <T> T.responseOk(): ResponseEntity<T> = ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(this)
 
 fun <T> T.responseCreated(): ResponseEntity<T> =
-    ResponseEntity.status(HttpStatus.CREATED).contentType(MediaType.APPLICATION_JSON).body(this)
+    ResponseEntity.status(HttpStatus.CREATED).body(this)
 
 fun <T> T.responseBadRequest(): ResponseEntity<T> =
     ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON).body(this)

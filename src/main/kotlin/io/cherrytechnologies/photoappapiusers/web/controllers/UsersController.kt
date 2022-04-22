@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*
 import java.util.*
 import java.util.logging.Logger
 import javax.validation.Valid
+import javax.ws.rs.core.MediaType
 
 @RestController
 @RequestMapping("/v1/api/users")
@@ -39,7 +40,11 @@ class UsersController(var userService: UserService) {
             .map { it.toCreateUserResponseModel() }
             .responseOk()
 
-    @PostMapping("/")
+    @PostMapping(
+        "/",
+        consumes = [MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON],
+        produces = [MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON]
+    )
     fun saveUser(
         @Valid
         @RequestBody

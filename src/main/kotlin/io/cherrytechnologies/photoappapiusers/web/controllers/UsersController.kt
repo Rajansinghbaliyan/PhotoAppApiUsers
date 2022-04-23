@@ -15,7 +15,7 @@ import javax.validation.Valid
 import javax.ws.rs.core.MediaType
 
 @RestController
-@RequestMapping("/v1/api/users")
+@RequestMapping("/users")
 class UsersController(var userService: UserService) {
 
     val log: Logger = Logger.getLogger(UsersController::class.toString())
@@ -41,7 +41,7 @@ class UsersController(var userService: UserService) {
             .responseOk()
 
     @PostMapping(
-        "/",
+        "/register",
         consumes = [MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON],
         produces = [MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON]
     )

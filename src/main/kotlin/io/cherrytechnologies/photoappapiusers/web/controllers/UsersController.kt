@@ -8,6 +8,7 @@ import io.cherrytechnologies.photoappapiusers.web.models.CreateUserRequest
 import io.cherrytechnologies.photoappapiusers.web.models.UpdateUserModel
 import io.cherrytechnologies.photoappapiusers.web.services.UserService
 import org.jetbrains.annotations.NotNull
+import org.springframework.core.env.Environment
 import org.springframework.web.bind.annotation.*
 import java.util.*
 import java.util.logging.Logger
@@ -16,9 +17,15 @@ import javax.ws.rs.core.MediaType
 
 @RestController
 @RequestMapping("/users")
-class UsersController(var userService: UserService) {
+class UsersController(var userService: UserService,val env: Environment) {
 
     val log: Logger = Logger.getLogger(UsersController::class.toString())
+
+    @GetMapping("/status/check")
+    fun statusCheck() =
+        "It's running and the Token expiration is: ${env.getProperty("jwt.expiration")}"
+            .responseOk()
+            .logInfo(log)
 
     @GetMapping("/hello")
     fun greetings() = "Hello is working".responseOk().logInfo(log, " GET: users")

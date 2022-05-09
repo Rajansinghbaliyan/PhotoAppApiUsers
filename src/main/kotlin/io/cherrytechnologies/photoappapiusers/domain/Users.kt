@@ -26,7 +26,8 @@ data class Users(
             firstName = firstName,
             lastName = lastName,
             email = email,
-            password = password
+            password = password,
+            albumsList = null
         )
     }
 }

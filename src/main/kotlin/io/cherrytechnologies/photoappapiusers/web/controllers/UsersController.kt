@@ -17,7 +17,7 @@ import javax.ws.rs.core.MediaType
 
 @RestController
 @RequestMapping("/users")
-class UsersController(var userService: UserService,val env: Environment) {
+class UsersController(var userService: UserService, val env: Environment) {
 
     val log: Logger = Logger.getLogger(UsersController::class.toString())
 
@@ -34,7 +34,7 @@ class UsersController(var userService: UserService,val env: Environment) {
     fun getUserById(@PathVariable id: UUID) =
         userService
             .getUserById(id)
-//            .toCreateUserResponseModel()
+            .toUserResponseModel()
             .responseOk()
 
     @GetMapping("/")

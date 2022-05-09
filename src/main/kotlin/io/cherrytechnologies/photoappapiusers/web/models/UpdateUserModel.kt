@@ -21,6 +21,7 @@ open class UpdateUserModel(
             lastName,
             email,
             password,
+            null
         )
     }
 }

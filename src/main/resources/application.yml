@@ -13,3 +13,6 @@ spring:
 
 gateway:
   ip: ${GATEWAY_IP}
+
+albums:
+  url: albums-api

@@ -4,23 +4,45 @@ import io.cherrytechnologies.photoappapiusers.customexceptions.BadRequestExcepti
 import io.cherrytechnologies.photoappapiusers.customexceptions.NotFoundException
 import io.cherrytechnologies.photoappapiusers.utils.OffsetBasedPageRequest
 import io.cherrytechnologies.photoappapiusers.utils.logInfo
+import io.cherrytechnologies.photoappapiusers.utils.typeReference
 import io.cherrytechnologies.photoappapiusers.web.dto.UserDto
+import io.cherrytechnologies.photoappapiusers.web.models.AlbumsResponseModel
 import io.cherrytechnologies.photoappapiusers.web.repositories.UserRepository
+import org.springframework.core.ParameterizedTypeReference
+import org.springframework.core.env.Environment
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.http.HttpMethod
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
+import org.springframework.web.client.RestTemplate
 import java.util.*
 import java.util.logging.Logger
 
 @Service
-class UserService(val userRepository: UserRepository, val passwordEncoder: BCryptPasswordEncoder) {
+class UserService(
+    val env: Environment,
+    val userRepository: UserRepository,
+    val passwordEncoder: BCryptPasswordEncoder,
+    val restTemplate: RestTemplate
+    ) {
+
+
 
     val log: Logger = Logger.getLogger(UserService::class.toString())
 
-    fun getUserById(id: UUID) =
-        userRepository.findByIdOrNull(id)?.toUserDto()
-            .logInfo(log, "/Get User Id:${id}")
-            ?: throw NotFoundException("No User for this id:$id")
+
+    fun getUserById(id: UUID) = with(userRepository.findByIdOrNull(id)?.toUserDto()) {
+        logInfo(log, "/Get User Id:${id}")
+        this ?: throw NotFoundException("No User for this id:$id")
+
+        val albumUrl = "http://${env.getProperty("albums.url")}/users/$id/albums"
+
+        val albumListResponse = restTemplate
+            .exchange(albumUrl,HttpMethod.GET,null, typeReference<List<AlbumsResponseModel>>())
+
+        this.albumsList = albumListResponse.body
+        this
+    }
 
     fun getAllUser(limit: Int, offset: Int) =
         userRepository.findAll(OffsetBasedPageRequest(limit, offset))

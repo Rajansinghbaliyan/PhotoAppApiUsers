@@ -29,7 +29,8 @@ open class CreateUserRequest(
             firstName,
             lastName,
             email,
-            password
+            password,
+            null
         )
     }
 }

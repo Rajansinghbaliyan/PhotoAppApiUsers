@@ -1,18 +1,24 @@
 package io.cherrytechnologies.photoappapiusers.utils
 
-import java.util.logging.Logger
+import org.slf4j.Logger
 
-fun <T> T.logInfo(log: Logger,msg: String = this.toString()): T {
+
+fun <T> T.logInfo(log: Logger, msg: String = this.toString()): T {
     log.info(msg)
     return this
 }
 
 fun <T> T.logWarn(log:Logger,msg: String):T {
-    log.warning(msg)
+    log.warn(msg)
     return this
 }
 
-fun <T> T.globalLogInfo(msg: String):T {
-    Logger.getGlobal().info(msg)
+fun <T> T.logError(log:Logger,msg: String):T {
+    log.error(msg)
     return this
 }
+
+//fun <T> T.globalLogInfo(msg: String):T {
+//    Logger.getGlobal().info(msg)
+//    return this
+//}

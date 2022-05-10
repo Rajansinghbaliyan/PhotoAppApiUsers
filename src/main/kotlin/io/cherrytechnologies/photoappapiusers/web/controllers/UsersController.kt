@@ -8,10 +8,10 @@ import io.cherrytechnologies.photoappapiusers.web.models.CreateUserRequest
 import io.cherrytechnologies.photoappapiusers.web.models.UpdateUserModel
 import io.cherrytechnologies.photoappapiusers.web.services.UserService
 import org.jetbrains.annotations.NotNull
+import org.slf4j.LoggerFactory
 import org.springframework.core.env.Environment
 import org.springframework.web.bind.annotation.*
 import java.util.*
-import java.util.logging.Logger
 import javax.validation.Valid
 import javax.ws.rs.core.MediaType
 
@@ -19,7 +19,7 @@ import javax.ws.rs.core.MediaType
 @RequestMapping("/users")
 class UsersController(var userService: UserService, val env: Environment) {
 
-    val log: Logger = Logger.getLogger(UsersController::class.toString())
+    val log = LoggerFactory.getLogger(UsersController::class.toString())
 
     @GetMapping("/status/check")
     fun statusCheck() =

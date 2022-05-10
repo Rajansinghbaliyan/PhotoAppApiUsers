@@ -1,17 +1,20 @@
 package io.cherrytechnologies.photoappapiusers.web.services
 
+import feign.FeignException
 import io.cherrytechnologies.photoappapiusers.customexceptions.BadRequestException
 import io.cherrytechnologies.photoappapiusers.customexceptions.NotFoundException
 import io.cherrytechnologies.photoappapiusers.utils.OffsetBasedPageRequest
+import io.cherrytechnologies.photoappapiusers.utils.logError
 import io.cherrytechnologies.photoappapiusers.utils.logInfo
 import io.cherrytechnologies.photoappapiusers.web.dto.UserDto
+import io.cherrytechnologies.photoappapiusers.web.models.AlbumsResponseModel
 import io.cherrytechnologies.photoappapiusers.web.repositories.UserRepository
 import io.cherrytechnologies.photoappapiusers.web.services.albums.AlbumsServiceClient
+import org.slf4j.LoggerFactory
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
-import java.util.logging.Logger
 
 @Service
 class UserService(
@@ -20,7 +23,7 @@ class UserService(
     val albumsServiceClient: AlbumsServiceClient
 ) {
 
-    val log: Logger = Logger.getLogger(UserService::class.toString())
+    val log = LoggerFactory.getLogger(UserService::class.toString())
 
     fun getUserById(id: UUID) = with(userRepository.findByIdOrNull(id)?.toUserDto()) {
 
@@ -32,7 +35,14 @@ class UserService(
 //        val albumListResponse = restTemplate
 //            .exchange(albumUrl,HttpMethod.GET,null, typeReference<List<AlbumsResponseModel>>())
 
-        val albumList = albumsServiceClient.getAlbumsByUserId(id)
+        var albumList = listOf<AlbumsResponseModel>()
+
+        try{
+            albumList = albumsServiceClient.getAlbumsByUserId(id)
+        } catch (e: FeignException){
+            e.message.logError(log,e.message.toString())
+        }
+
 
         this.albumsList = albumList
         this

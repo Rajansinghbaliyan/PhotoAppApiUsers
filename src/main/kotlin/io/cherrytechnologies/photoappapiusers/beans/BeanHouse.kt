@@ -1,5 +1,6 @@
 package io.cherrytechnologies.photoappapiusers.beans
 
+import feign.Logger
 import org.springframework.cloud.client.loadbalancer.LoadBalanced
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -14,5 +15,8 @@ class BeanHouse {
     @Bean
     @LoadBalanced
     fun getRestTemplate() = RestTemplate()
+
+    @Bean
+    fun getLogger() = Logger.Level.FULL
 }
 

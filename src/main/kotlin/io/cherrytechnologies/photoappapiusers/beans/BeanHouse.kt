@@ -20,7 +20,7 @@ class BeanHouse {
     @Bean
     fun getLogger() = Logger.Level.FULL
 
-    @Bean
-    fun getFeignErrorDecoder() = FeignErrorDecoder()
+//    @Bean
+//    fun getFeignErrorDecoder() = FeignErrorDecoder()
 }
 

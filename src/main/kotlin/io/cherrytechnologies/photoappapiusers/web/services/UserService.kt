@@ -1,15 +1,11 @@
 package io.cherrytechnologies.photoappapiusers.web.services
 
-import feign.FeignException
 import io.cherrytechnologies.photoappapiusers.customexceptions.BadRequestException
 import io.cherrytechnologies.photoappapiusers.customexceptions.NotFoundException
 import io.cherrytechnologies.photoappapiusers.utils.OffsetBasedPageRequest
-import io.cherrytechnologies.photoappapiusers.utils.logError
 import io.cherrytechnologies.photoappapiusers.utils.logInfo
 import io.cherrytechnologies.photoappapiusers.web.dto.UserDto
-import io.cherrytechnologies.photoappapiusers.web.models.AlbumsResponseModel
 import io.cherrytechnologies.photoappapiusers.web.repositories.UserRepository
-import io.cherrytechnologies.photoappapiusers.web.services.albums.AlbumsServiceClient
 import org.slf4j.LoggerFactory
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder

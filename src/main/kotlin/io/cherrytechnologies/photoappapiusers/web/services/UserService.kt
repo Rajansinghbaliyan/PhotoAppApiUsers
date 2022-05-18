@@ -35,16 +35,16 @@ class UserService(
 //        val albumListResponse = restTemplate
 //            .exchange(albumUrl,HttpMethod.GET,null, typeReference<List<AlbumsResponseModel>>())
 
-        var albumList = listOf<AlbumsResponseModel>()
+//        var albumList = listOf<AlbumsResponseModel>()
+//
+//        try{
+//            albumList = albumsServiceClient.getAlbumsByUserId(id)
+//        } catch (e: FeignException){
+//            e.message.logError(log,e.message.toString())
+//        }
 
-        try{
-            albumList = albumsServiceClient.getAlbumsByUserId(id)
-        } catch (e: FeignException){
-            e.message.logError(log,e.message.toString())
-        }
 
-
-        this.albumsList = albumList
+        this.albumsList = albumsServiceClient.getAlbumsByUserId(id)
         this
     }
 

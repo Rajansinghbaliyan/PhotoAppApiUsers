@@ -1,6 +1,7 @@
 package io.cherrytechnologies.photoappapiusers.beans
 
 import feign.Logger
+import io.cherrytechnologies.photoappapiusers.web.services.albums.errordecoder.FeignErrorDecoder
 import org.springframework.cloud.client.loadbalancer.LoadBalanced
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -18,5 +19,8 @@ class BeanHouse {
 
     @Bean
     fun getLogger() = Logger.Level.FULL
+
+    @Bean
+    fun getFeignErrorDecoder() = FeignErrorDecoder()
 }
 
